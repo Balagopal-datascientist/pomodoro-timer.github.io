@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomodoro Timer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+
+    .timer {
+      font-size: 36px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #darkModeSwitch {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="tabs">
+      <button onclick="setTimer(25)">25 Min</button>
+      <button onclick="setTimer(5)">5 Min</button>
+      <button onclick="setTimer(15)">15 Min</button>
+    </div>
+    
+    <div class="timer" id="timer">25:00</div>
+
+    <div class="controls">
+      <button onclick="startPauseTimer()" id="startPauseBtn">Start</button>
+      <button onclick="resetTimer()">Reset</button>
+    </div>
+
+    
+  </div>
+
+  <script>
+    let interval;
+    let time;
+    let isPaused = true;
+    let darkMode = false;
+
+    function setTimer(minutes) {
+      clearInterval(interval);
+      time = minutes * 60;
+      updateTimerDisplay();
+    }
+
+    function startPauseTimer() {
+      if (isPaused) {
+        interval = setInterval(updateTimer, 1000);
+        document.getElementById('startPauseBtn').textContent = 'Pause';
+      } else {
+        clearInterval(interval);
+        document.getElementById('startPauseBtn').textContent = 'Resume';
+      }
+      isPaused = !isPaused;
+    }
+
+    function resetTimer() {
+      clearInterval(interval);
+      isPaused = true;
+      document.getElementById('startPauseBtn').textContent = 'Start';
+      setTimer(25); // Default to 25 minutes
+    }
+
+    function updateTimer() {
+      if (time > 0) {
+        time--;
+        updateTimerDisplay();
+      } else {
+        clearInterval(interval);
+        isPaused = true;
+        document.getElementById('startPauseBtn').textContent = 'Start';
+        alert('Timer completed!');
+      }
+    }
+
+    function updateTimerDisplay() {
+      const minutes = Math.floor(time / 60);
+      const seconds = time % 60;
+      document.getElementById('timer').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+
+    
+  </script>
+</body>
+</html>
